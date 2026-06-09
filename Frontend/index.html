@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Projeto MK - Gerenciador de cronograma diário de medicamentos acessível e de alto contraste para idosos. em conformidade com WCAG 2.1 AA.">
+  <title>Projeto MK - Controle Diário de Medicamentos</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+<body>
+
+  <!-- Container Geral -->
+  <div class="container">
+
+
+    <!-- Conteúdo Principal: Panorama Cronológico -->
+    <main id="main-content">
+      
+      <!-- Seção: Manhã -->
+      <section id="period-manha" class="period-section period-section--manha" aria-labelledby="title-manha">
+        <header class="period-section__header">
+          <!-- Ícone do Sol da Manhã -->
+          <span class="material-icons period-section__icon" aria-hidden="true">light_mode</span>
+          <h2 id="title-manha" class="period-section__title">Manhã <span class="sr-only">(Medicamentos das 06:00 às 12:00)</span></h2>
+        </header>
+        <ul class="period-section__list" id="list-manha">
+        </ul>
+      </section>
+
+      <!-- Seção: Tarde -->
+      <section id="period-tarde" class="period-section period-section--tarde" aria-labelledby="title-tarde">
+        <header class="period-section__header">
+          <!-- Ícone do Sol Pleno da Tarde -->
+          <span class="material-icons period-section__icon" aria-hidden="true">wb_sunny</span>
+          <h2 id="title-tarde" class="period-section__title">Tarde <span class="sr-only">(Medicamentos das 12:00 às 18:00)</span></h2>
+        </header>
+        <ul class="period-section__list" id="list-tarde">
+        </ul>
+      </section>
+
+      <!-- Seção: Tarde-Noite -->
+      <section id="period-tardenoite" class="period-section period-section--tardenoite" aria-labelledby="title-tardenoite">
+        <header class="period-section__header">
+          <!-- Ícone do Sol se Pondo -->
+          <span class="material-icons period-section__icon" aria-hidden="true">wb_twilight</span>
+          <h2 id="title-tardenoite" class="period-section__title">Tarde-Noite <span class="sr-only">(Medicamentos das 18:00 às 20:00)</span></h2>
+        </header>
+        <ul class="period-section__list" id="list-tardenoite">
+        </ul>
+      </section>
+
+      <!-- Seção: Noite -->
+      <section id="period-noite" class="period-section period-section--noite" aria-labelledby="title-noite">
+        <header class="period-section__header">
+          <!-- Ícone de Lua com Estrelas -->
+          <span class="material-icons period-section__icon" aria-hidden="true">nights_stay</span>
+          <h2 id="title-noite" class="period-section__title">Noite <span class="sr-only">(Medicamentos das 20:00 às 06:00)</span></h2>
+        </header>
+        <ul class="period-section__list" id="list-noite">
+        </ul>
+      </section>
+
+    </main>
+
+    <!-- Botão de Ação Flutuante/Fixo para Adicionar Novo Medicamento -->
+    <button class="btn btn-floating" id="btn-add-med" aria-haspopup="dialog">
+      <!-- Ícone de Mais (+) -->
+      <span class="material-icons btn__icon" aria-hidden="true">add</span>
+      Adicionar Novo Remédio
+    </button>
+
+  </div> <!-- Fim container -->
+
+  <!-- Modal/Dialog de Cadastro Acessível -->
+  <dialog class="dialog-modal" id="add-med-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-modal__header">
+      <h2 class="dialog-modal__title" id="dialog-title">Cadastrar Novo Remédio</h2>
+      <button class="btn btn--danger" id="btn-close-dialog" aria-label="Fechar formulário de cadastro">
+        <!-- Ícone Fechar (X) -->
+        <span class="material-icons btn__icon" aria-hidden="true">close</span>
+      </button>
+    </div>
+
+    <form class="form" id="add-med-form" autocomplete="off" novalidate>
+      
+      <!-- Nome do Remédio -->
+      <div class="form__group">
+        <label class="form__label" for="form-med-name">Nome do Remédio:</label>
+        <input class="form__input" type="text" id="form-med-name" required placeholder="Ex: Paracetamol, Losartana">
+      </div>
+
+      <!-- Dosagem -->
+      <div class="form__group">
+        <label class="form__label" for="form-med-dosage">Dosagem Exata:</label>
+        <input class="form__input" type="text" id="form-med-dosage" required placeholder="Ex: 1 comprimido, 5ml, 500mg">
+      </div>
+
+      <!-- Horário / Período Predefinido -->
+      <div class="form__group">
+        <span class="form__label">Período e Horário do Remédio:</span>
+        <span class="form__description">Selecione o melhor período do dia para tomar:</span>
+        
+        <div class="form__presets-grid" role="radiogroup" aria-required="true" aria-label="Escolha do período do dia">
+          
+          <!-- Opção: Manhã -->
+          <div class="form__preset-option">
+            <input class="form__preset-radio" type="radio" id="preset-manha" name="preset-time" value="manha" checked>
+            <label class="form__preset-label" for="preset-manha">
+              <span>Manhã</span>
+              <span class="form__description">08:00</span>
+            </label>
+          </div>
+
+          <!-- Opção: Tarde -->
+          <div class="form__preset-option">
+            <input class="form__preset-radio" type="radio" id="preset-tarde" name="preset-time" value="tarde">
+            <label class="form__preset-label" for="preset-tarde">
+              <span>Tarde</span>
+              <span class="form__description">14:00</span>
+            </label>
+          </div>
+
+          <!-- Opção: Tarde-Noite -->
+          <div class="form__preset-option">
+            <input class="form__preset-radio" type="radio" id="preset-tardenoite" name="preset-time" value="tardenoite">
+            <label class="form__preset-label" for="preset-tardenoite">
+              <span>Tarde-Noite</span>
+              <span class="form__description">19:00</span>
+            </label>
+          </div>
+
+          <!-- Opção: Noite -->
+          <div class="form__preset-option">
+            <input class="form__preset-radio" type="radio" id="preset-noite" name="preset-time" value="noite">
+            <label class="form__preset-label" for="preset-noite">
+              <span>Noite</span>
+              <span class="form__description">22:00</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Cor e Tipo do Comprimido -->
+      <div class="form__group">
+        <span class="form__label">Cor Visual da Pílula:</span>
+        <span class="form__description">Selecione a cor que mais se parece com o remédio real:</span>
+        
+        <div class="form__pills-selection" role="radiogroup" aria-required="true" aria-label="Escolha da cor do comprimido">
+          
+          <!-- Vermelho -->
+          <div class="form__pill-option">
+            <input class="form__pill-radio" type="radio" id="pill-red" name="pill-color" value="red" checked>
+            <label class="form__pill-label form__pill-label--red" for="pill-red">
+              <span class="material-icons card-medication__pill-icon" aria-hidden="true">medication</span>
+              <span class="sr-only">Comprimido Vermelho</span>
+            </label>
+          </div>
+
+          <!-- Azul -->
+          <div class="form__pill-option">
+            <input class="form__pill-radio" type="radio" id="pill-blue" name="pill-color" value="blue">
+            <label class="form__pill-label form__pill-label--blue" for="pill-blue">
+              <span class="material-icons card-medication__pill-icon" aria-hidden="true">medication</span>
+              <span class="sr-only">Comprimido Azul</span>
+            </label>
+          </div>
+
+          <!-- Amarelo -->
+          <div class="form__pill-option">
+            <input class="form__pill-radio" type="radio" id="pill-yellow" name="pill-color" value="yellow">
+            <label class="form__pill-label form__pill-label--yellow" for="pill-yellow">
+              <span class="material-icons card-medication__pill-icon" aria-hidden="true">medication</span>
+              <span class="sr-only">Comprimido Amarelo</span>
+            </label>
+          </div>
+
+          <!-- Verde -->
+          <div class="form__pill-option">
+            <input class="form__pill-radio" type="radio" id="pill-green" name="pill-color" value="green">
+            <label class="form__pill-label form__pill-label--green" for="pill-green">
+              <span class="material-icons card-medication__pill-icon" aria-hidden="true">medication</span>
+              <span class="sr-only">Comprimido Verde</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Ações do Formulário -->
+      <div class="form__actions">
+        <button class="btn btn--secondary" type="button" id="btn-cancel-dialog">Cancelar</button>
+        <button class="btn btn--action-taken" id="btn-save-dialog">
+          <span class="material-icons btn__icon" aria-hidden="true">check</span>
+          Salvar Remédio
+        </button>
+      </div>
+
+    </form>
+  </dialog>
+
+  <!-- Container de Toasts (Feedback) -->
+  <div id="toast-container" class="toast-container" role="status" aria-live="polite"></div>
+
+  <!-- Script Lógico -->
+  <script src="app.js"></script>
+</body>
+</html>

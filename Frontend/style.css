@@ -747,6 +747,15 @@ body {
   flex: 1;
 }
 
+.spining-load {
+  animation: spining 0.3s linear infinite;
+}
+
+@keyframes spining {
+  to {
+    transform: rotate(360deg);
+  }
+}
 /* ==========================================================================
    Alertas e Toast (Feedback Visual Extra)
    ========================================================================== */

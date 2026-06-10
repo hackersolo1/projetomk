@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Ainda está faltando informações... Você preencheu todos os campos?')
       return;
     } else {
+      btnSaveDialog.innerHTML = '<i class="material-icons spining-load btn__icon" aria-hidden="true">progress_activity</i>';
+      btnSaveDialog.style = "opacity: 0.5; cursor: not-allowed";
+      btnSaveDialog.disabled = true;
       await saveMed(formMedNameValue, formMedDosageValue, selectedPeriod.value, selectedColor.value);
     }
   });
@@ -59,6 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeAddModal();
     loadMed();
+
+    btnSaveDialog.innerHTML = `
+    <span class="material-icons btn__icon" aria-hidden="true">check</i>
+    Salvar remédio
+    `;
+    btnSaveDialog.style = "opacity: 1; cursor: cursor";
+    btnSaveDialog.disabled = false;
   };
 
   // ------------------------------------------------
@@ -124,8 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4 - Deleção do remédio por ID
   // -------------------------------
   async function deleteMed(medCode) {
-    const {data, error} = await supabaseC.from('medData').delete().eq('id', medCode);
-    if(error) {
+    const { data, error } = await supabaseC.from('medData').delete().eq('id', medCode);
+    if (error) {
       console.log(`>> [Supabase function 'deleteMed'] Erro ao deletar os dados: ${error}`);
     }
 

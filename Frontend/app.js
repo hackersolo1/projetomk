@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Ainda está faltando informações... Você preencheu todos os campos?')
       return;
     } else {
-      btnSaveDialog.innerHTML = '<i class="material-icons spining-load btn__icon" aria-hidden="true">progress_activity</i>';
+      btnSaveDialog.innerHTML = '<span class="material-symbols spining-load btn__icon">sync</span>';
       btnSaveDialog.style = "opacity: 0.5; cursor: not-allowed";
       btnSaveDialog.disabled = true;
       await saveMed(formMedNameValue, formMedDosageValue, selectedPeriod.value, selectedColor.value);
@@ -63,10 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeAddModal();
     loadMed();
 
-    btnSaveDialog.innerHTML = `
-    <span class="material-icons btn__icon" aria-hidden="true">check</i>
-    Salvar remédio
-    `;
+    btnSaveDialog.innerHTML = `<span class="material-icons btn__icon" aria-hidden="true">check</span> Salvar remédio`;
     btnSaveDialog.style = "opacity: 1; cursor: cursor";
     btnSaveDialog.disabled = false;
   };

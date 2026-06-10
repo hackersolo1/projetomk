@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log(`>> [Supabase function 'saveMed'] Erro ao salvar dados: ${error}`);
       return;
     };
+
+    closeAddModal();
+    loadMed();
   };
 
   // ------------------------------------------------
@@ -105,16 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    document.querySelectorAll('#btn--danger').forEach((btn) => {
+    document.querySelector(`#list-${d.period}`).appendChild(medLi);
+
+    document.querySelectorAll('#delete-med').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         const medCode = e.currentTarget.dataset.code;
-        console.log(`Botão clicado no ID ${medCode}`);
-      //   deleteMed(medCode);
+        deleteMed(medCode);
       });
     });
 
 
-    document.querySelector(`#list-${d.period}`).appendChild(medLi);
   };
 
   // -------------------------------

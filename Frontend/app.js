@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Ainda está faltando informações... Você preencheu todos os campos?')
       return;
     } else {
-      btnSaveDialog.innerHTML = '<span class="material-symbols spining-load btn__icon">sync</span>';
+      btnSaveDialog.innerHTML = 'Carregando...';
       btnSaveDialog.style = "opacity: 0.5; cursor: not-allowed";
       btnSaveDialog.disabled = true;
       await saveMed(formMedNameValue, formMedDosageValue, selectedPeriod.value, selectedColor.value);

@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
       color: sc
     });
 
-    console.log(mn, md, sp, sc);
 
     if (error) {
       console.log(`>> [Supabase function 'saveMed'] Erro ao salvar dados: ${error}`);
@@ -88,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------------------------------------
   function renderMed(d) {
     const medLi = document.createElement('li');
-    medLi.classList.add(`card-medication-${d.period}n`);
+    medLi.classList.add(`card-medication--${d.period}`);
     medLi.classList.add('card-medication');
     medLi.id = `${d.id}`;
     medLi.innerHTML = `
